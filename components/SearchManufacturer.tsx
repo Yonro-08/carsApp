@@ -1,18 +1,19 @@
 'use client';
 
-import { manufacturers } from '@/constants';
-import { Combobox, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { Fragment, useState } from 'react';
+import { Combobox, Transition } from '@headlessui/react';
+
+import { manufacturers } from '@/constants';
 
 interface SearchManufacturerProps {
-	manufacturer: string;
-	setManufacturer: (manufacturer: string) => void;
+	selected: string;
+	setSelected: (selected: string) => void;
 }
 
 function SearchManufacturer({
-	manufacturer,
-	setManufacturer,
+	selected,
+	setSelected,
 }: SearchManufacturerProps) {
 	const [query, setQuery] = useState('');
 
@@ -28,7 +29,7 @@ function SearchManufacturer({
 
 	return (
 		<div className="search-manufacturer">
-			<Combobox value={manufacturer} onChange={setManufacturer}>
+			<Combobox value={selected} onChange={setSelected}>
 				<div className="relative w-full">
 					<Combobox.Button className="absolute top-[14px]">
 						<Image

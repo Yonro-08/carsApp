@@ -1,13 +1,15 @@
+import { FilterProps } from '@/types';
 import { ICar } from '@/types/ICar';
 
-export const fetchCars = async () => {
+export const fetchCars = async (filters: FilterProps) => {
+	const { fuel, limit, manufacturer, model, year } = filters;
 	const headers = {
 		'X-RapidAPI-Key': '3f5532e4bemsh8fa34d68deacbcap1ba02fjsnf3ebe499b195',
 		'X-RapidAPI-Host': 'cars-by-api-ninjas.p.rapidapi.com',
 	};
 
 	const response = await fetch(
-		'https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=carrera',
+		`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&limit=${limit}&model=${model}&fuel_type=${fuel}`,
 		{
 			headers,
 		},
@@ -31,7 +33,7 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
 	return rentalRatePerDay.toFixed(0);
 };
 
-export const generateCarImageUrl = (car: ICar, angle?: string) => {
+export const generateCarImageUrl = (car: ICar, angle: string = '') => {
 	const url = new URL('https://cdn.imagin.studio/getimage');
 
 	const { make, year, model } = car;
@@ -44,4 +46,14 @@ export const generateCarImageUrl = (car: ICar, angle?: string) => {
 	url.searchParams.append('angle', `${angle}`);
 
 	return `${url}`;
+};
+
+export const updateSearchParams = (type: string, value: string) => {
+	const searchParams = new URLSearchParams(window.location.search);
+
+	searchParams.set(type, value);
+
+	const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+
+	return newPathname;
 };
